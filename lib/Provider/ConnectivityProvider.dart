@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
@@ -44,57 +43,6 @@ class ConnectivityProvider with ChangeNotifier {
     switch (result) {
       case ConnectivityResult.wifi:
       case ConnectivityResult.mobile:
-        String wifiName, wifiBSSID, wifiIP;
-
-        try {
-          if (Platform.isIOS) {
-            LocationAuthorizationStatus status =
-                await connectivity.getLocationServiceAuthorization();
-            if (status == LocationAuthorizationStatus.notDetermined) {
-              status = await connectivity.requestLocationServiceAuthorization();
-            }
-            if (status == LocationAuthorizationStatus.authorizedAlways ||
-                status == LocationAuthorizationStatus.authorizedWhenInUse) {
-              wifiName = await connectivity.getWifiName();
-            } else {
-              wifiName = await connectivity.getWifiName();
-            }
-          } else {
-            wifiName = await connectivity.getWifiName();
-          }
-        } on PlatformException catch (e) {
-          print(e.toString());
-          wifiName = "Failed to get Wifi Name";
-        }
-
-        try {
-          if (Platform.isIOS) {
-            LocationAuthorizationStatus status =
-                await connectivity.getLocationServiceAuthorization();
-            if (status == LocationAuthorizationStatus.notDetermined) {
-              status = await connectivity.requestLocationServiceAuthorization();
-            }
-            if (status == LocationAuthorizationStatus.authorizedAlways ||
-                status == LocationAuthorizationStatus.authorizedWhenInUse) {
-              wifiBSSID = await connectivity.getWifiBSSID();
-            } else {
-              wifiBSSID = await connectivity.getWifiBSSID();
-            }
-          } else {
-            wifiBSSID = await connectivity.getWifiBSSID();
-          }
-        } on PlatformException catch (e) {
-          print(e.toString());
-          wifiBSSID = "Failed to get Wifi BSSID";
-        }
-
-        try {
-          wifiIP = await connectivity.getWifiIP();
-        } on PlatformException catch (e) {
-          print(e.toString());
-          wifiIP = "Failed to get Wifi IP";
-        }
-
         connectionStatus = true;
         notifyListeners();
         break;
